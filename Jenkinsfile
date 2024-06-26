@@ -7,15 +7,7 @@ node {
     }
 
     stage('Build image') {
-  
        app = docker.build("carlosdelgadillo/suma")
-    }
-
-    stage('Test image') {
-
-        app.inside {
-            sh 'echo "Tests passed"'
-        }
     }
 
     stage('Push image') {
@@ -26,7 +18,7 @@ node {
     }
     
     stage('Trigger ManifestUpdate') {
-                echo "triggering updatemanifestjob"
-                build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+                echo "hola"
+
         }
 }
