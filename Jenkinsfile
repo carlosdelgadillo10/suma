@@ -18,7 +18,7 @@ node {
     }
     
     stage('Trigger ManifestUpdate') {
-                echo "hola"
+                echo "hola erdnando"
 
         }
 }
