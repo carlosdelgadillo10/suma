@@ -8,49 +8,46 @@ node {
     stage('Build image') {
         app = docker.build("carlosdelgadillo/sumaa")
     }
-    stage('Run Tests and Generate Reports') {
-        steps {
-            sh '''
-            # Crear y activar el entorno virtual
-            python -m venv venv
-            . venv/bin/activate
-            
-            # Instalar dependencias
-            pip install --upgrade pip
-            pip install -r requirements.txt
-            
-            # Ejecutar pruebas con cobertura
+    stages {
+        stage('Run Tests and Generate Reports') {
+            steps {
+                sh '''
+                # Crear el entorno virtual
+                python -m venv venv
+                
+                # Activar el entorno virtual
+                . venv/bin/activate
+                
+                # Instalar dependencias
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                
+                # Ejecutar pruebas con cobertura
                 venv/bin/coverage run -m pytest
                 
-            # Generar informe XML de cobertura
-            venv/bin/coverage xml -o coverage.xml
-            
-            # Generar informe XML de resultados de pruebas
-            venv/bin/pytest --junitxml=pytest-report.xml
-            '''
+                # Generar informe XML de cobertura
+                venv/bin/coverage xml -o coverage.xml
+                
+                # Generar informe XML de resultados de pruebas
+                venv/bin/pytest --junitxml=pytest-report.xml
+                '''
+            }
         }
-    }
-
-    stage('Push image') {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            app.push("${env.BUILD_NUMBER}")
-        }
-    }
-
-    stage('SonarQube Analysis') {
-        environment {
-            // Reemplaza 'SonarScanner' con el nombre de tu SonarQube Scanner en Jenkins
-            SONARQUBE_SCANNER_HOME = tool 'sonar-scanner'
-        }
-        steps {
-            withSonarQubeEnv('SonarQube Server') {
-                sh "${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner"
+        stage('Publish Results') {
+            steps {
+                // Publicar la cobertura de código
+                publishCoverage adapters: [coberturaAdapter('coverage.xml')], sourceFileResolver: sourceFiles('NEVER_STORE')
+                
+                // Publicar los resultados de las pruebas
+                junit 'pytest-report.xml'
             }
         }
     }
-    
-    stage('Trigger ManifestUpdate') {
-        echo "hola erdnando"
+    post {
+        always {
+            // Limpiar el entorno
+            sh 'rm -rf venv'
+        }
     }
 }
 

@@ -5,4 +5,5 @@ httpx
 pytest
 pytest 
 pytest-xdist
+pytest-cov
 
