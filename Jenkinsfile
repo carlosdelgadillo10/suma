@@ -17,8 +17,8 @@ node {
 
     stage('SonarQube Analysis') {
     def scannerHome = tool 'sonar-scanner';
-    withSonarQubeEnv('Sonarqube') {
-      sh "${scannerHome}/bin/sonar-scanner -sonar.projectKey=${suma-fastapi} -sonar.projectName=${Suma FastAPI} -sonar.branch=${main}  -sonar.projectVersion=${1.0} -sonar.sources=${./app}. -sonar.language=${python}  -sonar.python.xunit.reportPath=${pytest-report.xml}" // -Dsonar.python.coverage.reportPaths=${params.COVERAGE}"
+    withSonarQubeEnv() {
+      sh "${scannerHome}/bin/sonar-scanner"
     }
   }
     
