@@ -16,7 +16,7 @@ node {
     }
 
     stage('SonarQube Analysis') {
-        withSonarQubeEnv('SonarQube Server') {
+        withSonarQubeEnv('server-sonar') {
             // Puedes configurar las opciones de SonarQube según sea necesario
             def scannerHome = tool 'SonarQube Scanner'
             sh "${scannerHome}/bin/sonar-scanner"
