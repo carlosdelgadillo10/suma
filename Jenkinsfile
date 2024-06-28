@@ -16,16 +16,17 @@ node {
             . venv/bin/activate
             
             # Instalar dependencias
+            pip install --upgrade pip
             pip install -r requirements.txt
             
             # Ejecutar pruebas con cobertura
-            coverage run -m pytest
-            
+                venv/bin/coverage run -m pytest
+                
             # Generar informe XML de cobertura
-            coverage xml -o coverage.xml
+            venv/bin/coverage xml -o coverage.xml
             
             # Generar informe XML de resultados de pruebas
-            pytest --junitxml=pytest-report.xml
+            venv/bin/pytest --junitxml=pytest-report.xml
             '''
         }
     }
