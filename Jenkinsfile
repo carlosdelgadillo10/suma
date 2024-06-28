@@ -1,12 +1,10 @@
 node {
     def app
 
-    stage('Clone repository') {
-        checkout scm
-    }
+   
 
     stage('Build image') {
-        app = docker.build("carlosdelgadillo/web")
+        app = docker.build("carlosdelgadillo/sumaa")
     }
 
     stage('Push image') {
