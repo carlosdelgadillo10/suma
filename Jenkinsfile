@@ -10,12 +10,26 @@ node {
     }
     stage('Run Tests and Generate Coverage') {
         steps {
-            sh '''
+            sh "
             python -m venv venv
             . venv/bin/activate
+            pip install -r requirements.txt  # Crear y activar el entorno virtual
+            python -m venv venv
+            . venv/bin/activate
+            
+            # Instalar dependencias
             pip install -r requirements.txt
-            pytest --cov=app --cov-report=xml --cov-report=html
-            '''
+            
+            # Ejecutar pruebas con cobertura
+            coverage run -m pytest
+            
+            # Generar informe XML de cobertura
+            coverage xml -o coverage.xml
+            
+            # Generar informe XML de resultados de pruebas
+            pytest --junitxml=pytest-report.xml
+            
+            "
         }
     }
 
