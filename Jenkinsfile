@@ -16,15 +16,14 @@ node {
     }
 
     stage('SonarQube Analysis') {
-        withSonarQubeEnv('server-sonar') {
-            // Puedes configurar las opciones de SonarQube según sea necesario
-            def scannerHome = tool 'SonarQube Scanner'
-            sh "${scannerHome}/bin/sonar-scanner"
-        }
+    def scannerHome = tool 'serversonar';
+    withSonarQubeEnv() {
+      sh "${scannerHome}/bin/sonar-scanner"
     }
+  }
     
     stage('Trigger ManifestUpdate') {
-        echo "hola erdnando como estas"
+        echo "hola erdnando"
     }
 }
 
