@@ -13,7 +13,3 @@ class Operacion(BaseModel):
 @app.post("/sumar")
 def sumar(op: Operacion):
     return op.num1 + op.num2
-
-@app.post("/restar")
-def restar(op: Operacion):
-    return op.num1 - op.num2

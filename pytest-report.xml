@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="0.555" timestamp="2024-06-28T10:40:14.129713" hostname="carlos"><testcase classname="suma.test_suma" name="test_sumar" time="0.010" /></testsuite></testsuites>
