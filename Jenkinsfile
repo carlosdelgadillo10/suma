@@ -8,12 +8,10 @@ node {
     stage('Build image') {
         app = docker.build("carlosdelgadillo/sumaa")
     }
-    stage('Run Tests and Generate Coverage') {
+    stage('Run Tests and Generate Reports') {
         steps {
-            sh "
-            python -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt  # Crear y activar el entorno virtual
+            sh '''
+            # Crear y activar el entorno virtual
             python -m venv venv
             . venv/bin/activate
             
@@ -28,8 +26,7 @@ node {
             
             # Generar informe XML de resultados de pruebas
             pytest --junitxml=pytest-report.xml
-            
-            "
+            '''
         }
     }
 
