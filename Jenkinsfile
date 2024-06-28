@@ -1,5 +1,9 @@
 node {
     def app
+    stage('Clean workspace') {
+        // Limpia el directorio de trabajo
+        deleteDir()
+    }
 
     stage('Clone repository') {
         checkout scm
