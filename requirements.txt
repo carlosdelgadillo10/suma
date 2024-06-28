@@ -3,5 +3,6 @@ pydantic
 uvicorn
 httpx
 pytest
-pytest pytest-xdist coverage
+pytest 
+pytest-xdist
 
