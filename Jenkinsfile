@@ -4,6 +4,31 @@ node {
     stage('Clone repository') {
         checkout scm
     }
+    stage('Install dependencies') {
+        // Instalar dependencias Python
+        sh 'pip install -r requirements.txt'
+    }
+
+    stage('Run tests and coverage') {
+        // Ejecutar pruebas y generar informe de cobertura
+        sh 'pytest --cov=./app --cov-report=xml:coverage.xml'
+    }
+
+    stage('SonarQube Analysis') {
+        withSonarQubeEnv('SonarQube') {
+            sh """
+            sonar-scanner \
+                -Dsonar.projectKey=suma-fastapi \
+                -Dsonar.projectName="Suma FastAPI" \
+                -Dsonar.projectVersion=1.0 \
+                -Dsonar.sources=./app \
+                -Dsonar.tests=test_suma.py
+                -Dsonar.python.coverage.reportPaths=coverage.xml \
+                -Dsonar.python.xunit.reportPath=pytest-report.xml \
+                -Dsonar.language=python
+            """
+        }
+    }
 
     stage('Build image') {
         app = docker.build("carlosdelgadillo/sumaa")
